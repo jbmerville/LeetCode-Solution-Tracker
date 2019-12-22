@@ -1,0 +1,54 @@
+{
+    "c": {
+        "extension": "c",
+        "comment": "//"
+    },
+    "cpp": {
+        "extension": "cpp",
+        "comment": "//"
+    },
+    "csharp": {
+        "extension": "cs",
+        "comment": "//"
+    },
+    "java": {
+        "extension": "java",
+        "comment": "//"
+    },
+    "python2": {
+        "extension": "py",
+        "comment": "#"
+    },
+    "python3": {
+        "extension": "py",
+        "comment": "#"
+    },
+    "javascript": {
+        "extension": "js",
+        "comment": "//"
+    },
+    "ruby": {
+        "extension": "rb",
+        "comment": "#"
+    },
+    "swift": {
+        "extension": "swift",
+        "comment": "//"
+    },
+    "go": {
+        "extension": "go",
+        "comment": "//"
+    },
+    "php": {
+        "extension": "php",
+        "comment": "//"
+    }, 
+    "scala": {
+        "extension": "scala",
+        "comment": "//"
+    },
+    "rust": {
+        "extension": "rs",
+        "comment": "//"
+    }
+}
