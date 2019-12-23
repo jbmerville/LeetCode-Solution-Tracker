@@ -4,15 +4,15 @@ const { name, cookie, path } = require('./config.json');
 const languages = require('./languages-map.json');
 
 const url = process.argv[2];
-const apiSumbissionUrl = 'https://leetcode.com/api/submissions/';
+const apiSumbissionsUrl = 'https://leetcode.com/api/submissions/';
 const apiAlgorithmsUrl = 'https://leetcode.com/api/problems/algorithms/';
-const leetcode = 'https://leetcode.com/problems/';
+const leetcodeUrl = 'https://leetcode.com/problems/';
 
 
 // Get the code from the last successful submission for a problem.
-const getSubmissionInfo = async (url) => await request(
+const getSubmissionInfo = (url) => request(
 	{
-		url: apiSumbissionUrl +  url.replace(leetcode, ''),
+		url: apiSumbissionsUrl +  url.replace(leetcodeUrl, ''),
 		headers: {
 			Cookie: cookie,
 		},
@@ -36,30 +36,28 @@ const getSubmissionInfo = async (url) => await request(
 );
 
 // Get info about the problem code.
-const getProblemInfo = async (data) => {
-	request(
-		{
-			url: apiAlgorithmsUrl,
-			headers: {
-				Cookie: cookie,
-			},
-			method: 'GET'
-		}, async (err, res, body) => {
-			if (err) {
-				console.error('Request failed with error: ' + err);
-			} else {
-				const problems = JSON.parse(body).stat_status_pairs;
-				problems.forEach(problem => {
-					if (problem.stat.question__title ==  data.title){
-						data.difficulty = getDifficulty(problem.difficulty.level);
-						writeToFile(data);
-						return;
-					}
-				});
-			}
+const getProblemInfo = (data) => request(
+	{
+		url: apiAlgorithmsUrl,
+		headers: {
+			Cookie: cookie,
+		},
+		method: 'GET'
+	}, async (err, res, body) => {
+		if (err) {
+			console.error('Request failed with error: ' + err);
+		} else {
+			const problems = JSON.parse(body).stat_status_pairs;
+			problems.forEach(problem => {
+				if (problem.stat.question__title ==  data.title){
+					data.difficulty = getDifficulty(problem.difficulty.level);
+					writeToFile(data);
+					return;
+				}
+			});
 		}
-	);
-};
+	}
+);
 
 const getDifficulty = difficulty => {
 	switch (difficulty) {
@@ -86,7 +84,8 @@ const getLanguage = (lang) => {
 const writeToFile = (data) => {
 	const { code, lang, difficulty } = data;
 	const { extension, comment } = getLanguage(lang);
-	const submission = `\n${comment} ${name} - ${url} - ${difficulty}\n ${code}`;
+	const trimedCode = code.trim();
+	const submission = `\n\n${comment} ${name} - ${url} - ${difficulty}\n ${trimedCode}`;
 	fs.appendFile(path + `Submissions.${extension}`, submission, (err) => {
 		if (err) throw err;
 		console.log('Saved!');

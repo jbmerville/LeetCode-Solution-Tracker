@@ -1,3 +1,4 @@
 yarn.lock
 .eslintrc.json
 node_modules/
+config.json
